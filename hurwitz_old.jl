@@ -1,20 +1,31 @@
 using HomotopyContinuation
+
+@var X[1:4] x[1:2]
+
+R = rand(-10:10,4,3)
+r = R*[1;x[1];x[2]]
+
+nsamples = 50
+samples = []
+for i = 1:nsamples
+    push!(samples, (R*randn(ComplexF64,3)).^(-1))
+end
+
+deg = 3
+E, C = exponents_coefficients((sum(X))^deg, X)
+
+Vdm = transpose(hcat([[prod(s.^E[:,i]) for i = 1:size(E,2)] for s in samples]...))
+using LinearAlgebra
+ns = nullspace(Vdm)
+ns = real.(ns/ns[findfirst(i->abs(ns[i])>1e-3,1:length(ns))])
+ns_rat = rationalize.(ns,tol = 1e-7)
+
+mons = [prod(X.^E[:,i]) for i = 1:size(E,2)]
+Rec = transpose(ns_rat)*mons
+
+subs(subs(Rec,X=>1 ./r),x=>rand(-1000:10000,2))
+
 using Oscar
-
-d = 2
-l = 4
-
-K = QQ
-RR, vrs = polynomial_ring(K,vcat(["x$i" for i = 1:d+1], ["y$i" for i = 1:l]))
-x,y = vrs[1:d+1],vrs[d+2:d+1+l]
-
-R = rand(-10:10,l,d+1)
-r = R*x
-
-X_R_inc = ideal([r[i]*y[i] - 1 for i in eachindex(y)])
-
-X_R = eliminate(X_R_inc, x)
-
 
 
 @var t[1:2,1:2]
@@ -22,18 +33,16 @@ X_R = eliminate(X_R_inc, x)
 #F= [Rec; [X[1];X[2]]+t*[X[3];X[4]]]
 #J = differentiate(F,X)[:,1:3]
 #K = GF(1993)
+K = QQ
 nsamples = 550
 samples = []
 samples_XR = []
 for i = 1:nsamples
     aux = K.(R*(rand(1:50,3).//rand(1:10,3)))
-    if sum(aux.==zero(K)) > 0
-        i = i-1
-        continue
+    if sum(aux.==zero(K)) == 0
+        push!(samples_XR, 1 .// aux)
     end
-    push!(samples_XR, 1 .// aux)
 end
-samples_XR
 
 function HC_to_oscar_Q(f,vars,HC_vars,K)
     E,C = exponents_coefficients(f,HC_vars)
