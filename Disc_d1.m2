@@ -1,9 +1,9 @@
-n = 4
-KK = frac (QQ[b_3..b_n])
-S = KK[u_1..u_n,y_1..y_n,x]
-c = {0,1} | apply(toList(3..n), i->b_i)
-R = matrix for i to n-1 list {c_i,1}
-ell = for i to n-1 list R_(i,1)*x + R_(i,0)
+n = 3
+KK = frac (QQ[b_2..b_n])
+S = KK[u_0..u_n,y_0..y_n,x]
+c = {0,1} | apply(toList(2..n), i->b_i)
+R = matrix for i to n list {c_i,1}
+ell = for i to n list R_(i,1)*x + R_(i,0)
 
 dlog = sum(1..n, i->u_i*y_i)
 hess = sum(1..n, i->u_i*y_i^2)

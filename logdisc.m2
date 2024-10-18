@@ -141,16 +141,9 @@ end
 restart
 load "logdisc.m2"
 
+bA = matrix(QQ,{{0,1,0},{0,0,1},{0,1,-1},{-1,1,0},{-3,0,1},{1,2,-1}})
+gbTrace = 1
+I = logDisc bA
+
 (M,S) = M0nArrangement(5, Localize=>true)
-logDisc(M, PolyRing=>S)
-
-
-netList( {(gens S)_{0..8}, flatten entries (M * ( matrix{{1}} || (genericMatrix(coefficientRing ring h, x_1, 3, 1)) ))} )
-
-
---f = sub(nabla, QQ[u_0..u_4, Weights=>{1,0,1,0,0}])
---inF = (leadTerm(1,f))_0_0
-
-
-
-
+nabla = (logDisc(M, PolyRing=>S))_0
