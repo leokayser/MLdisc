@@ -99,6 +99,8 @@ function get_DeltaLog(L)
 end
 
 
+
+
 # Here is a short demo of the functionality. 
 L = get_L_M0m(7) # the matrix of M07
 deg = get_deg_DeltaLog(L) # 208
@@ -106,6 +108,7 @@ deg = get_deg_DeltaLog(L) # 208
 L = get_L_M0m(5) # the matrix of M05
 Δ = get_DeltaLog(L) # the discriminant in Example 1.1
 
-L = [1 2 1 0 0 0; 1 1 2 1 0 1; 1 3//2 3//2 0 1 1; 0 0 0 1 1 2] # The arrangement in Example 3.3
+L = [-1 0 1;
+      1 1 1] # The arrangement in Example 3.3
 deg = get_deg_DeltaLog(L) # 4 - the degree of the codimension-one part of ∇
 Δ = get_DeltaLog(L) # the discriminant in Example 3.3
